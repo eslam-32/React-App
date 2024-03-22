@@ -20,7 +20,7 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(apiUrl, {
-          timeout: 5000,
+          timeout: 10000,
           headers: {
             Authorization: basicAuth
 
