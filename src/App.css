@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: rgb(36, 24, 158);
+  background: rebeccapurple;
 }
 
 .App-logo {
@@ -37,7 +39,7 @@
   }
 }
 
-.myDiv {
-  background-color: #61dafb;
+/* App.css */
+body {
+  background-color: red; /* Change 'red' to your desired color */
 }
-

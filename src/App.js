@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -13,6 +15,7 @@ const App = () => {
   const basicAuth = 'Basic ' + btoa(username + ':' + password);
 
   useEffect(() => {
+    document.body.style.backgroundColor = '#FBF3D5';
     const fetchData = async () => {
       try {
         const response = await axios.get(apiUrl, {
@@ -37,18 +40,18 @@ const App = () => {
     part.PartNum.toLowerCase().includes(searchInput.toLowerCase())
   );
 
-  const toggleEditMode = (partId, Company) => {
-    if (editingPart === partId) {
+  const toggleEditMode = (PartNum, Company) => {
+    if (editingPart === PartNum) {
       setEditingPart(null); // Disable edit mode
     } else {
-      setEditingPart(partId); // Enable edit mode for the specified part
+      setEditingPart(PartNum); // Enable edit mode for the specified part
       setEditingCompany(Company)
     }
   };
 
-  const updatePartDescription = async (partId, newDescription, Company) => {
+  const updatePartDescription = async (PartNum, newDescription, Company) => {
     try {
-      const testURL = `${apiUrl}/('${Company}','${partId}')`
+      const testURL = `${apiUrl}/('${Company}','${PartNum}')`
       const response = await axios.patch(testURL, {
         PartDescription: newDescription
       }, {
@@ -57,7 +60,7 @@ const App = () => {
         }
       });
       // Update the local state to reflect the changes
-      setData(data.map(part => part.PartNum === partId ? { ...part, PartDescription: newDescription } : part));
+      setData(data.map(part => part.PartNum === PartNum ? { ...part, PartDescription: newDescription } : part));
       setEditingPart(null); // Disable edit mode after updating
     } catch (error) {
       console.error('Error updating part description:', error);
@@ -66,16 +69,17 @@ const App = () => {
 
   return (
     <div className='container my-5'>
+      <h1 className='h1 text-center'>Parts</h1>
       <input
         type="search"
-        className="form-control"
+        className="form-control mb-3 bg-light rounded"
         placeholder="Search by Part Number"
         value={searchInput}
         onChange={handleSearch}
       />
-      <table className="table">
+      <table className="table table-dark">
         <thead>
-          <tr>
+          <tr className="table-active">
             <th scope="col">Company</th>
             <th scope="col">Part Number</th>
             <th scope="col">Description</th>
@@ -106,7 +110,7 @@ const App = () => {
               </td>
             </tr>
           )
-          ) ?? <div>Loading...</div>}
+          ) ?? <div class="bg-black text-center">Loading...</div>}
         </tbody>
       </table>
     </div>
