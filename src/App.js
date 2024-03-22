@@ -20,8 +20,10 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(apiUrl, {
+          timeout: 5000,
           headers: {
             Authorization: basicAuth
+
           }
         });
         setData(response.data);
@@ -32,6 +34,23 @@ const App = () => {
 
     fetchData();
   }, [apiUrl, basicAuth]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: {
+          Authorization: basicAuth
+        }
+      });
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleButtonClick = () => {
+    fetchData();
+  };
 
   const handleSearch = (event) => {
     setSearchInput(event.target.value);
@@ -66,10 +85,12 @@ const App = () => {
     } catch (error) {
       console.error('Error updating part description:', error);
     }
+    // Load Data After Update
+    fetchData();
   };
-
   return (
     <div className='container my-5'>
+      <button className="btn btn-primary mb-3" onClick={handleButtonClick}>Load Data</button>
       <h1 className='h1 text-center'>Parts</h1>
       <input
         type="search"
